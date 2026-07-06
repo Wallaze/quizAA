@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Especial - Academia do Aquário</title>
+
+    <!-- Links de Estilo herdados da página principal (Exemplos do Template) -->
+    <link rel="stylesheet" href="https://cdn.awsli.com.br/production/static/loja/css/bootstrap-responsive.css" type="text/css">
+
+    <style>
+        /* Estilos customizados mínimos para a interface do Quiz */
+        body {
+            background-color: #f9f9f9;
+        }
+        .quiz-card-container {
+            margin: 50px auto;
+            max-width: 500px;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+            padding: 30px;
+            text-align: center;
+        }
+        .quiz-title {
+            color: #0056b3;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        .quiz-countdown {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeeba;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: bold;
+            margin-top: 20px;
+            font-size: 16px;
+        }
+        .btn-voltar {
+            display: inline-block;
+            margin-top: 25px;
+            padding: 10px 20px;
+            background-color: #0056b3;
+            color: #fff !important;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+        .btn-voltar:hover {
+            background-color: #004085;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Conteiner Principal seguindo o padrão Bootstrap do clone -->
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span12">
+
+                <!-- Card Central do Quiz -->
+                <div class="quiz-card-container">
+
+                    <!-- Imagem do Bilhete mantendo a proporção vertical -->
+                    <div style="max-width: 250px; margin: 0 auto 20px auto;">
+                        <img src="./bilhete.jpeg" alt="Bilhete Premiado" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);" />
+                    </div>
+
+                    <!-- Mensagem Institucional -->
+                    <h1 class="quiz-title">Quiz Academia do Aquário</h1>
+                    <p style="color: #666; font-size: 15px; line-height: 1.5;">
+                        Prepare-se para testar seus conhecimentos sobre o ecossistema marinho, biologia e aquarismo! Grandes surpresas esperam por você.
+                    </p>
+
+                    <!-- Alerta de Liberação da Promoção -->
+                    <div class="quiz-countdown">
+                        ⚠️ ATENÇÃO: Esta promoção e o Quiz estarão liberados a partir do dia 12 de julho de 2026!
+                    </div>
+
+                    <!-- Link de Retorno para a Home (Caminho Relativo) -->
+                    <a href="./index.html" class="btn-voltar" title="Voltar para a página principal">
+                        Voltar para a Loja
+                    </a>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
