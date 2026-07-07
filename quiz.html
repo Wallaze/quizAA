@@ -52,6 +52,31 @@
         .btn-voltar:hover {
             background-color: #004085;
         }
+
+        /* Estilo do botão dourado promocional solicitado */
+        .btn-testar-quiz {
+            display: block;
+            margin: 20px auto 0 auto;
+            width: 100%;
+            max-width: 280px;
+            padding: 14px 24px;
+            background: linear-gradient(135deg, #ffd700 0%, #d4af37 100%);
+            color: #1e293b !important;
+            text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
+            text-decoration: none !important;
+            font-size: 18px;
+            font-weight: bold;
+            border: 1px solid #aa8c2c;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+            transition: all 0.2s ease-in-out;
+            box-sizing: border-box;
+        }
+        .btn-testar-quiz:hover {
+            background: linear-gradient(135deg, #ffe033 0%, #e1b939 100%);
+            box-shadow: 0 6px 16px rgba(212, 175, 55, 0.5);
+            transform: translateY(-1px);
+        }
     </style>
 </head>
 <body>
@@ -83,6 +108,11 @@
                     <!-- Link de Retorno para a Home (Caminho Relativo) -->
                     <a href="./index.html" class="btn-voltar" title="Voltar para a página principal">
                         Voltar para a Loja
+                    </a>
+
+                    <!-- Botão Dourado de Direcionamento Promocional -->
+                    <a href="./quiz-promo.html" class="btn-testar-quiz" title="Iniciar o Quiz de testes">
+                        Testar o Quiz
                     </a>
 
                 </div>

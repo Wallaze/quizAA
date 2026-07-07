@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Especial - Academia do Aquário</title>
+
+    <!-- Links de Estilo herdados da página principal -->
+    <link rel="stylesheet" href="https://cdn.awsli.com.br/production/static/loja/css/bootstrap-responsive.css" type="text/css">
+
+    <style>
+        body {
+            background-color: #f1f5f9;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .quiz-card-container {
+            margin: 40px auto;
+            max-width: 550px;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            padding: 35px;
+            text-align: center;
+            box-sizing: border-box;
+        }
+        .quiz-title {
+            color: #0056b3;
+            font-size: 26px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        /* Barra de Progresso */
+        .progress-container {
+            background: #e2e8f0;
+            border-radius: 8px;
+            height: 8px;
+            width: 100%;
+            margin-bottom: 25px;
+            overflow: hidden;
+            display: none;
+        }
+        .progress-bar {
+            background: #0056b3;
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* Área de Conteúdo */
+        .quiz-step {
+            display: none;
+        }
+        .quiz-step.active {
+            display: block;
+        }
+        .question-text, .intro-text {
+            font-size: 16px;
+            color: #475569;
+            margin-bottom: 25px;
+            line-height: 1.6;
+            text-align: left;
+        }
+        .question-text {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        /* Regras em Destaque */
+        .rules-list {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 15px 15px 15px 35px;
+            margin-bottom: 25px;
+            text-align: left;
+        }
+        .rules-list li {
+            margin-bottom: 8px;
+            color: #334155;
+            font-size: 14px;
+        }
+
+        /* Input de E-mail (Exibido apenas no Sucesso) */
+        .quiz-input-group {
+            margin: 20px 0;
+            text-align: left;
+        }
+        .quiz-input-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #1e293b;
+            font-size: 14px;
+        }
+        .quiz-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 15px;
+            box-sizing: border-box;
+            transition: border-color 0.2s;
+        }
+        .quiz-input:focus {
+            border-color: #0056b3;
+            outline: none;
+        }
+
+        /* Opções de Resposta */
+        .options-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 20px 0;
+        }
+        .option-item {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 14px 20px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            text-align: left;
+            font-size: 15px;
+            color: #334155;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        .option-item:hover {
+            border-color: #0056b3;
+            background-color: #f0f7ff;
+        }
+        .option-item.selected {
+            border-color: #0056b3;
+            background-color: #e0f2fe;
+            color: #0369a1;
+        }
+
+        .option-item.correct-answer {
+            border-color: #22c55e !important;
+            background-color: #f0fdf4 !important;
+            color: #16a34a !important;
+        }
+        .option-item.wrong-answer {
+            border-color: #ef4444 !important;
+            background-color: #fef2f2 !important;
+            color: #dc2626 !important;
+        }
+        .option-item.disabled {
+            pointer-events: none;
+            opacity: 0.7;
+        }
+
+        /* Bloco de Feedback */
+        .feedback-box {
+            margin-top: 15px;
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: left;
+            font-size: 14px;
+            line-height: 1.5;
+            display: none;
+        }
+        .feedback-box.success {
+            display: block;
+            background-color: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            color: #16a34a;
+        }
+        .feedback-box.danger {
+            display: block;
+            background-color: #fff7ed;
+            border: 1px solid #ffedd5;
+            color: #c2410c;
+        }
+
+        /* Botões de Ação */
+        .btn-quiz-action {
+            display: inline-block;
+            width: 100%;
+            padding: 14px;
+            background-color: #0056b3;
+            color: #fff !important;
+            text-decoration: none;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+            box-sizing: border-box;
+            text-align: center;
+        }
+        .btn-quiz-action:hover {
+            background-color: #004085;
+        }
+        .btn-quiz-action:disabled {
+            background-color: #cbd5e1;
+            cursor: not-allowed;
+        }
+
+        .btn-next-step {
+            background-color: #22c55e;
+        }
+        .btn-next-step:hover {
+            background-color: #16a34a;
+        }
+        .btn-retry {
+            background-color: #dc2626;
+        }
+        .btn-retry:hover {
+            background-color: #b91c1c;
+        }
+
+        .btn-voltar {
+            display: inline-block;
+            margin-top: 20px;
+            color: #64748b !important;
+            text-decoration: underline;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span12">
+
+                <div class="quiz-card-container">
+
+                    <!-- Cabeçalho Dinâmico -->
+                    <div id="quiz-header">
+                        <div style="max-width: 180px; margin: 0 auto 15px auto;">
+                            <img src="./bilhete.jpeg" alt="Bilhete Premiado" style="width: 100%; height: auto; border-radius: 6px;" />
+                        </div>
+                        <h1 class="quiz-title">Quiz Academia do Aquário</h1>
+                        <div class="progress-container" id="progress-wrapper">
+                            <div class="progress-bar" id="quiz-progress"></div>
+                        </div>
+                    </div>
+
+                    <!-- Telas Gerenciadas por JavaScript -->
+                    <div id="quiz-flow"></div>
+
+                    <!-- Link de Saída Seguro -->
+                    <a href="./index.html" class="btn-voltar" title="Abandonar Desafio">
+                        Abandonar Quiz e voltar para a Loja
+                    </a>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const quizData = [
+            {
+                question: "O famoso 'Peixe-Palhaço' (como o Nemo) costuma viver em parceria com qual organismo no aquário marinho?",
+                options: ["Uma Anêmona do mar", "Um Caranguejo", "Uma tartaruga", "Uma Planta de água doce"],
+                correct: 0,
+                explanation: "Isso mesmo! O Peixe-Palhaço e a Anêmona vivem em uma relação de simbiose (mutualismo), onde um protege o outro contra predadores naturais."
+            },
+            {
+                question: "Qual tipo de água deve ser utilizada para repor a água que evapora do aquário marinho?",
+                options: ["Água da torneira direto com sal", "Água mineral com gás", "Água pura desmineralizada (sem sal)", "Água do mar coletada na praia da cidade"],
+                correct: 2,
+                explanation: "Perfeito! Quando a água do aquário evapora, apenas o líquido vai embora e o sal permanece. Repor com água pura desmineralizada evita que a salinidade suba além do limite seguro."
+            },
+            {
+                question: "Qual destas funções é o principal objetivo de um filtro biológico em um aquário?",
+                options: ["Deixar a água azulada artificialmente", "Remover as impurezas e gases tóxicos através de bactérias benéficas", "Alimentar os peixes de forma automática", "Esquentar a água em dias de inverno"],
+                correct: 1,
+                explanation: "Exatamente! As colônias de bactérias fixadas nas mídias biológicas quebram compostos perigosos (como a amônia gerada pelos restos de comida) e os transformam em substâncias seguras."
+            }
+        ];
+
+        let currentState = "INTRO";
+        let currentStep = 0;
+        let selectedOptionIndex = null;
+        let isAnswerValidated = false;
+        let score = 0;
+
+        const quizFlowContainer = document.getElementById('quiz-flow');
+        const progressWrapper = document.getElementById('progress-wrapper');
+        const progressBar = document.getElementById('quiz-progress');
+
+        function initQuiz() {
+            currentState = "INTRO";
+            currentStep = 0;
+            score = 0;
+            progressWrapper.style.display = "none";
+
+            quizFlowContainer.innerHTML = `
+                <div class="quiz-step active">
+                    <p class="intro-text">
+                        Seja bem-vindo ao teste de conhecimentos da <strong>Academia do Aquário</strong>! Responda às perguntas e garanta vantagens exclusivas para seus ecossistemas marinhos.
+                    </p>
+                    <ul class="rules-list">
+                        <li>Você responderá a exatamente <strong>3 questões</strong> de nível básico.</li>
+                        <li>É necessário acertar no <strong>mínimo 2 questões</strong> para liberar o prêmio.</li>
+                        <li>Se não atingir a pontuação, não se preocupe: você poderá <strong>tentar novamente</strong>.</li>
+                    </ul>
+                    <button class="btn-quiz-action btn-next-step" onclick="startQuiz()">
+                        Iniciar Desafio imediatamente
+                    </button>
+                </div>
+            `;
+        }
+
+        window.startQuiz = function() {
+            currentState = "QUESTION";
+            progressWrapper.style.display = "block";
+            renderStep();
+        };
+
+        function renderStep() {
+            selectedOptionIndex = null;
+            isAnswerValidated = false;
+
+            if (currentStep < quizData.length) {
+                const percent = (currentStep / quizData.length) * 100;
+                progressBar.style.width = `${percent}%`;
+
+                const currentQuestion = quizData[currentStep];
+                let optionsHtml = currentQuestion.options.map((option, idx) => `
+                    <li class="option-item" id="option-${idx}" onclick="selectOption(${idx})">${option}</li>
+                `).join('');
+
+                quizFlowContainer.innerHTML = `
+                    <div class="quiz-step active">
+                        <p class="question-text">${currentQuestion.question}</p>
+                        <ul class="options-list">
+                            ${optionsHtml}
+                        </ul>
+                        <div id="feedback-area" class="feedback-box"></div>
+                        <button class="btn-quiz-action" id="action-btn" disabled onclick="handleAction()">
+                            Confirmar Resposta
+                        </button>
+                    </div>
+                `;
+            } else {
+                showFinalScreen();
+            }
+        }
+
+        window.selectOption = function(index) {
+            if (isAnswerValidated) return;
+            selectedOptionIndex = index;
+            const items = document.querySelectorAll('.option-item');
+            items.forEach((item, idx) => {
+                if(idx === index) { item.classList.add('selected'); }
+                else { item.classList.remove('selected'); }
+            });
+            document.getElementById('action-btn').removeAttribute('disabled');
+        };
+
+        window.handleAction = function() {
+            const currentQuestion = quizData[currentStep];
+            const actionBtn = document.getElementById('action-btn');
+            const feedbackArea = document.getElementById('feedback-area');
+
+            if (!isAnswerValidated) {
+                isAnswerValidated = true;
+                const isCorrect = selectedOptionIndex === currentQuestion.correct;
+
+                const items = document.querySelectorAll('.option-item');
+                items.forEach((item, idx) => {
+                    item.classList.add('disabled');
+                    if (idx === currentQuestion.correct) { item.classList.add('correct-answer'); }
+                    else if (idx === selectedOptionIndex) { item.classList.add('wrong-answer'); }
+                });
+
+                if (isCorrect) {
+                    score++;
+                    feedbackArea.className = "feedback-box success";
+                    feedbackArea.innerHTML = `<strong>A resposta está certa! 🎉</strong><br>${currentQuestion.explanation}`;
+                } else {
+                    feedbackArea.className = "feedback-box danger";
+                    feedbackArea.innerHTML = `<strong>Ops, não foi bem essa! 🧐</strong><br>A alternativa correta era: <em>"${currentQuestion.options[currentQuestion.correct]}"</em>.<br><br>${currentQuestion.explanation}`;
+                }
+
+                actionBtn.innerHTML = "Avançar para Próxima Questão";
+                actionBtn.className = "btn-quiz-action btn-next-step";
+            } else {
+                currentStep++;
+                renderStep();
+            }
+        };
+
+        window.validateEndForm = function() {
+            const emailInput = document.getElementById('participant-email');
+            const claimBtn = document.getElementById('claim-btn');
+            const isValid = emailInput.value.includes('@') && emailInput.value.split('@')[1].includes('.');
+            if (isValid) {
+                claimBtn.removeAttribute('disabled');
+            } else {
+                claimBtn.setAttribute('disabled', 'true');
+            }
+        };
+
+        window.finishQuizSuccess = function() {
+            const email = document.getElementById('participant-email').value;
+            // O e-mail capturado está pronto para ser enviado via AJAX/Fetch para o backend institucional
+            quizFlowContainer.innerHTML = `
+                <div class="quiz-step active">
+                    <h2 style="color: #22c55e; font-size: 24px; margin-bottom: 15px;">Inscrição Confirmada! 🌊</h2>
+                    <p style="color: #475569; font-size: 15px; line-height: 1.6; text-align: left;">
+                        Obrigado! Seu cupom de 10% de desconto foi gerado e enviado para <strong>${email}</strong>. Ele estará disponível para uso em breve.
+                    </p>
+                    <br>
+                    <a href="./index.html" class="btn-quiz-action btn-next-step">
+                        Voltar para a Loja
+                    </a>
+                </div>
+            `;
+        };
+
+        function showFinalScreen() {
+            currentState = "END";
+            progressWrapper.style.display = "none";
+            const passed = score >= 2;
+
+            if (passed) {
+                quizFlowContainer.innerHTML = `
+                    <div class="quiz-step active">
+                        <h2 style="color: #22c55e; font-size: 24px; margin-bottom: 15px;">¡Excelente Resultado! 🏆</h2>
+                        <p style="color: #475569; font-size: 15px; line-height: 1.6; text-align: left;">
+                            Você acertou <strong>${score} de ${quizData.length}</strong> perguntas e garantiu sua recompensa!
+                        </p>
+                        <div class="quiz-input-group">
+                            <label for="participant-email">Insira seu melhor e-mail para receber o cupom de 10%:</label>
+                            <input type="email" id="participant-email" class="quiz-input" placeholder="seu-email@dominio.com" oninput="validateEndForm()">
+                        </div>
+                        <button id="claim-btn" class="btn-quiz-action btn-next-step" disabled onclick="finishQuizSuccess()">
+                            Enviar Cupom por E-mail
+                        </button>
+                    </div>
+                `;
+            } else {
+                quizFlowContainer.innerHTML = `
+                    <div class="quiz-step active">
+                        <h2 style="color: #ef4444; font-size: 24px; margin-bottom: 15px;">Não foi dessa vez! 🌊</h2>
+                        <p style="color: #475569; font-size: 15px; line-height: 1.6; text-align: left;">
+                            Você acertou <strong>${score} de ${quizData.length}</strong> perguntas. A regra exige um mínimo de 2 acertos para liberar a recompensa.
+                        </p>
+                        <p style="color: #475569; font-size: 15px; line-height: 1.6; text-align: left;">
+                            Mas não desanime! Revise as explicações e tente novamente agora mesmo para garantir seu benefício.
+                        </p>
+                        <br>
+                        <button class="btn-quiz-action btn-retry" onclick="initQuiz()">
+                            Tentar Novamente
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        initQuiz();
+    </script>
+</body>
+</html>
