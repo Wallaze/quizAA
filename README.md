@@ -1,10 +1,7 @@
 # Projeto Quiz: Lançamento COPÉPODES ULTRA CONCENTRADO
 
 Este repositório contém o protótipo arquitetural e visual desenvolvido para a validação da nova campanha da **Academia do Aquário**.
-<<<<<<< HEAD
 
-=======
->>>>>>> af15afe25b24473653ef22e4bbf4120576bae518
 O objetivo central do projeto é integrar um sistema de **Quiz interativo** à plataforma de e-commerce.
 
 ---
